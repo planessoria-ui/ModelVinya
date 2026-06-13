@@ -1,0 +1,45 @@
+name: Deploy a GitHub Pages
+
+# Publica el anotador estático ModelVinya en GitHub Pages.
+# Se ejecuta al hacer push a main (o manualmente desde la pestaña Actions).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permisos mínimos necesarios para desplegar en Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Solo un despliegue a la vez; no cancelar uno en curso.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Habilita Pages automáticamente la primera vez (enablement: true).
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      # Sube la raíz del repo como sitio estático (index.html en la raíz).
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Desplegar en Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
