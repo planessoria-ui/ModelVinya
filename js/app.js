@@ -188,6 +188,8 @@ window.MV = window.MV || {};
 
     document.getElementById('btnUndo').addEventListener('click', function () { if (MV.undo()) refreshAll(); });
     document.getElementById('btnRedo').addEventListener('click', function () { if (MV.redo()) refreshAll(); });
+    document.getElementById('btnZoomIn').addEventListener('click', function () { MV.canvas.zoomCenter(1.2); MV.canvas.draw(); });
+    document.getElementById('btnZoomOut').addEventListener('click', function () { MV.canvas.zoomCenter(1 / 1.2); MV.canvas.draw(); });
     document.getElementById('btnFit').addEventListener('click', function () { MV.canvas.fit(); MV.canvas.draw(); });
     document.getElementById('btnDelImg').addEventListener('click', deleteCurrentImage);
 

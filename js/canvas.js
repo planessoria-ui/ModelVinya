@@ -161,10 +161,15 @@ window.MV = window.MV || {};
     v.offsetY = sy - before.y * v.scale;
   }
 
+  // Zoom centrado en el centro del lienzo (para botones y teclado)
+  function zoomCenter(factor) {
+    zoomAt(cv._cssW / 2, cv._cssH / 2, factor);
+  }
+
   MV.canvas = {
     init: init, draw: draw, fit: fit, resize: resize,
     imgToScreen: imgToScreen, screenToImg: screenToImg, eventToImg: eventToImg,
-    zoomAt: zoomAt,
+    zoomAt: zoomAt, zoomCenter: zoomCenter,
     get el() { return cv; },
   };
 })();

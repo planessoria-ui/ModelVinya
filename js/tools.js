@@ -50,6 +50,24 @@ window.MV = window.MV || {};
     return Math.hypot(sx - p.x, sy - p.y) <= 7;
   }
 
+  // Cursor según lo que hay bajo el ratón (feedback para mover/redimensionar bayas)
+  function updateHoverCursor(ip) {
+    if (spaceDown || !cv) return;
+    const tool = state.tool;
+    if (tool !== 'baya' && tool !== 'select') return;
+    let c = (tool === 'select') ? 'default' : 'crosshair';
+    const img = MV.current();
+    if (img) {
+      const bi = hitBaya(ip);
+      if (bi >= 0) {
+        const b = img.bayas[bi];
+        const d = Math.hypot(ip.x - b.cx, ip.y - b.cy);
+        c = (Math.abs(d - b.r) < 6 / state.view.scale) ? 'nwse-resize' : 'move';
+      }
+    }
+    cv.style.cursor = c;
+  }
+
   // ---- Eventos --------------------------------------------------------
   function onDown(e) {
     const img = MV.current();
@@ -68,6 +86,25 @@ window.MV = window.MV || {};
     const tool = state.tool;
 
     if (tool === 'baya') {
+      // ¿Editar una baya ya existente? (mover / redimensionar)
+      // Alt + clic fuerza crear una baya nueva aunque sea encima de otra.
+      if (!e.altKey) {
+        const bi = hitBaya(ip);
+        if (bi >= 0) {
+          const b = img.bayas[bi];
+          const d = Math.hypot(ip.x - b.cx, ip.y - b.cy);
+          MV.pushHistory();
+          state.selection = { type: 'baya', index: bi };
+          if (Math.abs(d - b.r) < 6 / state.view.scale) {
+            drag = { mode: 'baya-resize', index: bi };       // borde → redimensionar
+          } else {
+            drag = { mode: 'baya-move', index: bi, dx: ip.x - b.cx, dy: ip.y - b.cy }; // interior → mover
+          }
+          refresh();
+          return;
+        }
+      }
+      // Crear una baya nueva
       MV.pushHistory();
       const b = { cx: ip.x, cy: ip.y, r: state.defaultRadius };
       img.bayas.push(b);
@@ -163,6 +200,7 @@ window.MV = window.MV || {};
     }
     if (!drag) {
       if (preview && preview.mode === 'escala') { MV.canvas.draw(); }
+      updateHoverCursor(ip);
       return;
     }
 
@@ -257,6 +295,40 @@ window.MV = window.MV || {};
     if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'y')) {
       e.preventDefault(); if (MV.redo()) refresh(); return;
     }
+    // Zoom con teclado (centrado en el lienzo)
+    if (e.key === '+' || e.key === '=') { e.preventDefault(); MV.canvas.zoomCenter(1.2); MV.canvas.draw(); return; }
+    if (e.key === '-' || e.key === '_') { e.preventDefault(); MV.canvas.zoomCenter(1 / 1.2); MV.canvas.draw(); return; }
+
+    // Desplazamiento fino de la baya seleccionada con las flechas (px imagen)
+    const arrows = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+    if (arrows[e.key]) {
+      const img = MV.current(); const sel = state.selection;
+      const step = e.shiftKey ? 5 : 1;
+      if (img && sel && sel.type === 'baya') {
+        e.preventDefault(); MV.pushHistory();
+        const b = img.bayas[sel.index];
+        b.cx += arrows[e.key][0] * step; b.cy += arrows[e.key][1] * step;
+        MV.autosave(); refresh(); return;
+      }
+      if (img && sel && sel.type === 'racimoPt' && img.racimo) {
+        e.preventDefault(); MV.pushHistory();
+        const p = img.racimo.puntos[sel.index];
+        p[0] += arrows[e.key][0] * step; p[1] += arrows[e.key][1] * step;
+        MV.autosave(); refresh(); return;
+      }
+    }
+
+    // Ajuste fino del radio de la baya seleccionada con [ y ]
+    if (e.key === '[' || e.key === ']') {
+      const img = MV.current(); const sel = state.selection;
+      if (img && sel && sel.type === 'baya') {
+        e.preventDefault(); MV.pushHistory();
+        const b = img.bayas[sel.index];
+        b.r = Math.max(2, b.r + (e.key === ']' ? 1 : -1));
+        MV.autosave(); refresh(); return;
+      }
+    }
+
     if (e.key === 'Delete' || e.key === 'Backspace') {
       const img = MV.current(); const sel = state.selection;
       if (img && sel) {
