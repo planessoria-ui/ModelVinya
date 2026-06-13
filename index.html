@@ -12,13 +12,15 @@
     <div class="brand">🍇 ModelVinya <span>· Anotador de viña</span></div>
 
     <div class="toolbar" id="toolbar">
-      <button class="tool active" data-tool="baya"   title="Marcar bayas con círculos (B)">⭕ Baya</button>
+      <button class="tool active" data-tool="baya"   title="Marcar bayas (B). Clic = nueva · arrastra el interior = mover · arrastra el borde = redimensionar · Alt+clic = nueva encima de otra · flechas = mover fino · [ ] = radio">⭕ Baya</button>
       <button class="tool"        data-tool="racimo" title="Dibujar el contorno del racimo (R)">⬠ Racimo</button>
       <button class="tool"        data-tool="escala" title="Definir escala con una referencia real (E)">📏 Escala</button>
       <button class="tool"        data-tool="select" title="Seleccionar / mover / borrar (S)">🖱 Seleccionar</button>
       <span class="sep"></span>
       <button id="btnUndo"  title="Deshacer (Ctrl+Z)">↶</button>
       <button id="btnRedo"  title="Rehacer (Ctrl+Y)">↷</button>
+      <button id="btnZoomOut" title="Alejar (−)">🔍−</button>
+      <button id="btnZoomIn"  title="Acercar (+)">🔍＋</button>
       <button id="btnFit"   title="Ajustar imagen a pantalla (F)">⤢ Ajustar</button>
       <button id="btnDelImg" class="danger" title="Eliminar imagen actual">🗑 Imagen</button>
     </div>
@@ -147,8 +149,13 @@
         <li><b>Carga las fotos</b> con «📂 Cargar imágenes» y selecciona una en la lista de la izquierda.</li>
         <li><b>Define la escala</b> (📏): traza una línea sobre la referencia e introduce su
           longitud real en mm. Se calcula <code>mm/píxel</code>.</li>
-        <li><b>Marca las bayas</b> (⭕): clic y arrastra para ajustar el círculo a cada baya, o
-          un clic para colocar uno del radio por defecto. El contador <code>N_visible</code> sube solo.</li>
+        <li><b>Marca las bayas</b> (⭕): un clic coloca un círculo del radio por defecto, o clic y
+          arrastra para fijar el radio. El contador <code>N_visible</code> sube solo.
+          <br><b>Para ser preciso</b> (con la misma herramienta ⭕): usa la rueda o 🔍 para hacer
+          <b>zoom</b>, <b>arrastra el interior</b> del círculo para moverlo, <b>arrastra el borde</b>
+          para cambiar su tamaño, las <b>flechas</b> ←↑→↓ para desplazarlo píxel a píxel
+          (<i>Shift</i> = 5 px) y <code>[</code> <code>]</code> para afinar el radio.
+          <i>Alt+clic</i> crea una baya nueva aunque sea encima de otra.</li>
         <li><b>Dibuja el racimo</b> (⬠): clic en cada vértice del contorno y doble clic para cerrar.
           Da <code>A_racimo</code>.</li>
         <li><b>Rellena la ficha</b> agronómica y, si la tienes, la <b>verdad terreno</b>
