@@ -95,6 +95,12 @@ window.MV = window.MV || {};
       ctx.arc(c.x, c.y, 1.6, 0, Math.PI * 2);
       ctx.fillStyle = isSel ? '#ffd24a' : '#7bc043';
       ctx.fill();
+      // etiqueta de diámetro de ESTA baya (mm si hay escala, si no px)
+      if ((state.showDiam && rr >= 9) || isSel) {
+        const dmm = img.escala_mm_px ? (2 * b.r * img.escala_mm_px) : null;
+        const txt = (dmm != null) ? ('Ø ' + dmm.toFixed(1) + ' mm') : ('Ø ' + Math.round(2 * b.r) + ' px');
+        label(c.x, c.y - rr - 4, txt, isSel ? '#ffd24a' : '#cfe9b0');
+      }
     }
 
     // Línea de escala

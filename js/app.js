@@ -206,6 +206,13 @@ window.MV = window.MV || {};
       document.getElementById('defRadiusVal').textContent = rad.value;
     });
 
+    // Mostrar/ocultar el diámetro por baya
+    const showDiam = document.getElementById('showDiam');
+    showDiam.addEventListener('change', function () {
+      state.showDiam = showDiam.checked;
+      MV.canvas.draw();
+    });
+
     // Ayuda
     document.getElementById('btnHelp').addEventListener('click', function () {
       document.getElementById('helpModal').classList.remove('hidden');
