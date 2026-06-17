@@ -26,6 +26,7 @@ window.MV = window.MV || {};
     currentIndex: -1,     // índice de la imagen activa
     tool: 'baya',         // herramienta activa
     defaultRadius: 12,    // radio por defecto para bayas (px imagen)
+    showDiam: true,       // mostrar el diámetro (mm) sobre cada baya
     view: { scale: 1, offsetX: 0, offsetY: 0 }, // transformada del canvas
     selection: null,      // {type:'baya', index} | {type:'racimoPt', index} | null
     history: [],          // pila de snapshots (JSON sin imágenes)
