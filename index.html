@@ -169,6 +169,23 @@
       <p class="note">Por qué tu conteo automático fallaba: un detector genérico no reconoce
         bayas sin entrenarse antes. Este anotador crea la «verdad terreno» que luego usa
         YOLOv11 para aprender a contar. Primero etiquetas tú → después el modelo aprende.</p>
+
+      <h3>🎯 Verdad terreno: ¿media de todas o de una?</h3>
+      <p class="note">Son las medidas <b>reales</b> (con la mano, calibre y balanza), no las de la
+        foto. El diámetro y el peso de baya deben ser <b>la media de una muestra</b> de bayas, nunca
+        de una sola: el modelo predice la media del racimo y una baya suelta no es representativa.</p>
+      <ul class="formulas">
+        <li><b>N_total_real</b>: <b>todas</b> las bayas del racimo, contadas a mano desgranando.</li>
+        <li><b>Diam_real_mm</b>: <b>media</b> del calibre sobre ~15–20 bayas (arriba, medio y abajo).</li>
+        <li><b>Peso_baya_real_g</b>: pesa una muestra (p. ej. 50–100 bayas juntas) y divide entre su
+          número → peso medio por baya. Más fiable que pesar una sola.</li>
+        <li><b>Peso_racimo_real_g</b>: el racimo entero en la balanza.</li>
+      </ul>
+      <p class="note"><b>Coherencia:</b> <code>Peso_racimo ≈ N_total × Peso_baya</code>. Si no
+        cuadra (ej.: 101 × 0.42 ≈ 42 g, no 56.7 g), revisa el conteo, el peso medio o el peso del
+        racimo: los tres deben encajar. No hace falta rellenar la verdad terreno en todos los
+        racimos, pero cuantos más completos, mejor aprende y se valida el modelo.</p>
+
       <h3>Fórmulas usadas</h3>
       <ul class="formulas">
         <li>Diámetro de baya: <code>Diam_mm = 2·r(px) · (mm/px)</code></li>
