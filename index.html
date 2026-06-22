@@ -170,6 +170,14 @@
         bayas sin entrenarse antes. Este anotador crea la «verdad terreno» que luego usa
         YOLOv11 para aprender a contar. Primero etiquetas tú → después el modelo aprende.</p>
 
+      <h3>🤖 Etiquetado automático con SAM 3 (opcional)</h3>
+      <p class="note">Para pre-marcar las bayas automáticamente puedes usar <b>SAM 3</b> (Meta) en
+        un notebook de Google Colab (GPU gratuita): segmenta las bayas y genera un proyecto
+        <code>.json</code> que abres aquí con «📦 Abrir proyecto» para revisar y corregir.
+        SAM 3 no cabe en el navegador (modelo de PyTorch con GPU), por eso va en Colab.
+        Abre el notebook desde
+        <code>auto_labeling/sam3_to_modelvinya.ipynb</code> del repositorio (botón «Open in Colab»).</p>
+
       <h3>🎯 Verdad terreno: ¿media de todas o de una?</h3>
       <p class="note">Son las medidas <b>reales</b> (con la mano, calibre y balanza), no las de la
         foto. El diámetro y el peso de baya deben ser <b>la media de una muestra</b> de bayas, nunca
