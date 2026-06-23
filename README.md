@@ -1,5 +1,8 @@
 # 🍇 ModelVinya — Anotador de racimos (estilo VGG)
 
+[![Abrir anotador](https://img.shields.io/badge/▶_Abrir-Anotador_web-2ea44f)](https://planessoria-ui.github.io/ModelVinya/)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/planessoria-ui/ModelVinya/blob/main/auto_labeling/sam3_to_modelvinya.ipynb)
+
 Anotador de imágenes para viña, inspirado en **VGG Image Annotator (VIA)** y adaptado a la
 metodología de los documentos del proyecto (conteo de bayas, diámetro y peso). Es una
 aplicación **web estática**: no necesita instalación, ni servidor, ni conexión a internet.
@@ -26,6 +29,15 @@ Un detector genérico **no** cuenta bayas de uva sin haber sido entrenado antes 
 propias imágenes etiquetadas. Por eso el primer paso —el que cubre esta herramienta— es
 crear la **verdad terreno** etiquetando a mano. Con esos datos se entrena luego **YOLOv11**,
 que sí aprende a contar y a localizar bayas. Primero etiquetas tú → después el modelo aprende.
+
+## 🤖 Etiquetado automático con SAM 3 (opcional)
+
+Para **pre-marcar las bayas automáticamente** puedes usar **SAM 3** (Meta) en un notebook de
+Google Colab (GPU gratuita): segmenta las bayas, las convierte en círculos y genera un
+proyecto `.json` que abres en el anotador con «📦 Abrir proyecto» para revisar y corregir.
+
+👉 **[Abrir el notebook en Google Colab](https://colab.research.google.com/github/planessoria-ui/ModelVinya/blob/main/auto_labeling/sam3_to_modelvinya.ipynb)**
+ · detalles y requisitos en [`auto_labeling/`](auto_labeling/README.md).
 
 ## Cómo usarlo
 
