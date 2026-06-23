@@ -22,6 +22,7 @@
       <button id="btnZoomOut" title="Alejar (−)">🔍−</button>
       <button id="btnZoomIn"  title="Acercar (+)">🔍＋</button>
       <button id="btnFit"   title="Ajustar imagen a pantalla (F)">⤢ Ajustar</button>
+      <button id="btnKeepInside" title="Eliminar las bayas que quedan FUERA del contorno del racimo (deja solo las de dentro). Dibuja antes el racimo con ⬠.">✂ Fuera del racimo</button>
       <button id="btnDelImg" class="danger" title="Eliminar imagen actual">🗑 Imagen</button>
     </div>
 
@@ -160,7 +161,9 @@
           (<i>Shift</i> = 5 px) y <code>[</code> <code>]</code> para afinar el radio.
           <i>Alt+clic</i> crea una baya nueva aunque sea encima de otra.</li>
         <li><b>Dibuja el racimo</b> (⬠): clic en cada vértice del contorno y doble clic para cerrar.
-          Da <code>A_racimo</code>.</li>
+          Da <code>A_racimo</code>. <br>Si has pre-marcado con SAM 3 y hay bayas de hojas o racimos
+          vecinos, dibuja el contorno del racimo que quieres y pulsa <b>✂ Fuera del racimo</b>:
+          elimina de golpe todas las bayas que caen fuera del contorno (se puede deshacer con Ctrl+Z).</li>
         <li><b>Rellena la ficha</b> agronómica y, si la tienes, la <b>verdad terreno</b>
           (conteo manual, calibre, balanza). Esto entrena luego la corrección por oclusión.</li>
         <li><b>Exporta</b>: proyecto <code>.json</code> (para seguir luego), <code>.csv</code>

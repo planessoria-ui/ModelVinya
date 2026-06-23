@@ -97,6 +97,40 @@ window.MV = window.MV || {};
     refreshAll(); renderImageList();
   }
 
+  // ---- Limpiar bayas fuera del racimo --------------------------------
+  // Punto en polígono (ray casting). pts: [[x,y],...]
+  function pointInPolygon(x, y, pts) {
+    let inside = false;
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+      const xi = pts[i][0], yi = pts[i][1], xj = pts[j][0], yj = pts[j][1];
+      const intersect = ((yi > y) !== (yj > y)) &&
+        (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function keepBayasInsideRacimo() {
+    const im = MV.current();
+    if (!im) { MV.toast('No hay imagen activa.', true); return; }
+    const rac = im.racimo;
+    if (!rac || !rac.puntos || rac.puntos.length < 3) {
+      MV.toast('Dibuja primero el contorno del racimo (⬠).', true); return;
+    }
+    const pts = rac.puntos;
+    const before = im.bayas.length;
+    const kept = im.bayas.filter(function (b) { return pointInPolygon(b.cx, b.cy, pts); });
+    const removed = before - kept.length;
+    if (removed === 0) { MV.toast('Todas las bayas ya están dentro del racimo.'); return; }
+    if (!confirm('Se eliminarán ' + removed + ' baya(s) que quedan FUERA del contorno del racimo.\n¿Continuar? (puedes deshacer con Ctrl+Z)')) return;
+    MV.pushHistory();
+    im.bayas = kept;
+    state.selection = null;
+    MV.autosave();
+    refreshAll(); renderImageList();
+    MV.toast(removed + ' baya(s) eliminadas · quedan ' + kept.length + ' dentro del racimo.');
+  }
+
   // ---- Ficha de campo y verdad terreno <-> formulario ----------------
   const FICHA_FIELDS = {
     id_racimo: 'f_id', fecha: 'f_fecha', variedad: 'f_variedad', fase_fenologica: 'f_fase',
@@ -191,6 +225,7 @@ window.MV = window.MV || {};
     document.getElementById('btnZoomIn').addEventListener('click', function () { MV.canvas.zoomCenter(1.2); MV.canvas.draw(); });
     document.getElementById('btnZoomOut').addEventListener('click', function () { MV.canvas.zoomCenter(1 / 1.2); MV.canvas.draw(); });
     document.getElementById('btnFit').addEventListener('click', function () { MV.canvas.fit(); MV.canvas.draw(); });
+    document.getElementById('btnKeepInside').addEventListener('click', keepBayasInsideRacimo);
     document.getElementById('btnDelImg').addEventListener('click', deleteCurrentImage);
 
     document.getElementById('btnSaveProj').addEventListener('click', MV.io.saveProject);
