@@ -38,3 +38,9 @@ Es filtren deteccions per **confiança** (`SCORE_MIN`) i per **àrea** (`AREA_MI
   usar prompts visuals (punts/caixes) — ampliable al notebook.
 - SAM 3 detecta **baies visibles**; les amagades les corregeix el model d'oclusió (fase 2).
 - La precisió final sempre s'ha de **revisar a mà** a l'anotador abans d'entrenar.
+
+## Entrenar el model (YOLOv11)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/planessoria-ui/ModelVinya/blob/main/auto_labeling/train_yolo.ipynb)
+
+Quan tinguis les fotos etiquetades i exportades com a **YOLO dataset (.zip)** des de l'anotador, obre `train_yolo.ipynb` per entrenar el detector de baies.
